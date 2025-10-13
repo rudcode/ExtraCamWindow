@@ -106,16 +106,7 @@ void UExtraCamWindowComponent::DoWindowSetup()
 		if (LockResToMainWindow)
 			return;
 
-		// deny any window resolution change in the child windows
-
-		FVector2D MainViewportSize;
-		GEngine->GameViewport->GetViewportSize(MainViewportSize);
-
-		if (MainViewportSize.X != NewViewportSize.X || MainViewportSize.Y != NewViewportSize.Y)
-		{
-			SceneViewport->ResizeFrame(NewViewportSize.X, NewViewportSize.Y, EWindowMode::Windowed);
-			TextureTarget->ResizeTarget(NewViewportSize.X, NewViewportSize.Y);
-		}
+		TextureTarget->ResizeTarget(NewViewportSize.X, NewViewportSize.Y);
 	}));
 }
 
