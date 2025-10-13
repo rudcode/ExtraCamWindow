@@ -92,22 +92,6 @@ void UExtraCamWindowComponent::DoWindowSetup()
 	SceneViewport->SetUserFocus(LockMouseFocusToExtraWindow);
 	SceneViewport->LockMouseToViewport(LockMouseFocusToExtraWindow);
 
-	SceneViewport->SetOnSceneViewportResizeDel(FOnSceneViewportResize::CreateLambda([this](FVector2D newViewportSize) {
-		if (LockResToMainWindow == false)
-			return;
-
-		// deny any window resolution change in the child windows
-
-		FVector2D mainViewportSize;
-		GEngine->GameViewport->GetViewportSize(mainViewportSize);
-
-		if (mainViewportSize.X != newViewportSize.X || mainViewportSize.Y != newViewportSize.Y)
-		{
-			SceneViewport->ResizeFrame(mainViewportSize.X, mainViewportSize.Y, EWindowMode::Windowed);
-			TextureTarget->ResizeTarget(mainViewportSize.X, mainViewportSize.Y);
-		}
-	}));
-
 	if (this->GetWorld()->WorldType == EWorldType::Game)
 		StandaloneGame = true;
 	else
@@ -117,6 +101,22 @@ void UExtraCamWindowComponent::DoWindowSetup()
 	RenderTargetWidget = CreateWidget<URenderWidget>(GetWorld()->GetFirstPlayerController(), URenderWidget::StaticClass());
 	RenderTargetWidget->TextureTarget->SetBrushResourceObject(TextureTarget);
 	AddWidgetToExtraCam(RenderTargetWidget);
+
+	SceneViewport->SetOnSceneViewportResizeDel(FOnSceneViewportResize::CreateLambda([this](FVector2D NewViewportSize) {
+		if (LockResToMainWindow)
+			return;
+
+		// deny any window resolution change in the child windows
+
+		FVector2D MainViewportSize;
+		GEngine->GameViewport->GetViewportSize(MainViewportSize);
+
+		if (MainViewportSize.X != NewViewportSize.X || MainViewportSize.Y != NewViewportSize.Y)
+		{
+			SceneViewport->ResizeFrame(NewViewportSize.X, NewViewportSize.Y, EWindowMode::Windowed);
+			TextureTarget->ResizeTarget(NewViewportSize.X, NewViewportSize.Y);
+		}
+	}));
 }
 
 void UExtraCamWindowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
