@@ -33,6 +33,15 @@ void UExtraCamWindowComponent::BeginPlay()
 	if (LockResToMainWindow)
 		GEngine->GameViewport->GetViewportSize(InitialWindowRes);
 
+	GetWorld()->GetTimerManager().SetTimerForNextTick([this]() {
+		DoWindowSetup();
+	});
+
+	Super::BeginPlay();
+}
+
+void UExtraCamWindowComponent::DoWindowSetup()
+{
 	SAssignNew(ExtraWindow, SWindow)
 		.ClientSize(InitialWindowRes)
 		.SizingRule(LockResToMainWindow ? ESizingRule::FixedSize : ESizingRule::UserSized)
@@ -83,9 +92,6 @@ void UExtraCamWindowComponent::BeginPlay()
 	SceneViewport->SetUserFocus(LockMouseFocusToExtraWindow);
 	SceneViewport->LockMouseToViewport(LockMouseFocusToExtraWindow);
 
-	// the window and some stuff gets initialized by ticking slate, otherwise we get a thread-related crash in packaged builds..
-	FSlateApplication::Get().Tick();
-
 	SceneViewport->SetOnSceneViewportResizeDel(FOnSceneViewportResize::CreateLambda([this](FVector2D newViewportSize) {
 		if (LockResToMainWindow == false)
 			return;
@@ -111,8 +117,6 @@ void UExtraCamWindowComponent::BeginPlay()
 	RenderTargetWidget = CreateWidget<URenderWidget>(GetWorld()->GetFirstPlayerController(), URenderWidget::StaticClass());
 	RenderTargetWidget->TextureTarget->SetBrushResourceObject(TextureTarget);
 	AddWidgetToExtraCam(RenderTargetWidget);
-
-	Super::BeginPlay();
 }
 
 void UExtraCamWindowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
