@@ -158,9 +158,9 @@ bool UExtraCamWindowComponent::RemoveWidgetFromExtraCam(UUserWidget* inWidget)
 	return ViewportOverlayWidget->RemoveSlot(inWidget->TakeWidget());
 }
 
-void UExtraCamWindowComponent::BeginDestroy()
+void UExtraCamWindowComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Super::BeginDestroy();
+	Super::EndPlay(EndPlayReason);
 
 	if (!ExtraCamWindowEnabled)
 		return;
@@ -172,6 +172,11 @@ void UExtraCamWindowComponent::BeginDestroy()
 		else
 			ExtraWindow->DestroyWindowImmediately();
 	}
+
+	ExtraWindow.Reset();
+	ViewportOverlayWidget.Reset();
+	SceneViewport.Reset();
+
 	RenderTargetWidget = nullptr;
 }
 
