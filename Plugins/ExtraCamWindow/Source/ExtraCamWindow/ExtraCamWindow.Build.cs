@@ -2,8 +2,8 @@ using UnrealBuildTool;
 
 public class ExtraCamWindow : ModuleRules
 {
-	public ExtraCamWindow(TargetInfo Target)
-	{
+    public ExtraCamWindow(ReadOnlyTargetRules Target) : base(Target)
+    {
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Slate", "SlateCore", "UMG" });
 
         //Uncomment if you are using online features
