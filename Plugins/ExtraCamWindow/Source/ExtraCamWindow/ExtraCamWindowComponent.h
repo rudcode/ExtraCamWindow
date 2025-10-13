@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,14 +7,13 @@
 
 #include "ExtraCamWindowComponent.generated.h"
 /**
- * 
+ *
  */
 UCLASS(hidecategories = (Collision, Object, Physics), ClassGroup = "ExtraCamWindow", editinlinenew, meta = (BlueprintSpawnableComponent), Blueprintable)
 class EXTRACAMWINDOW_API UExtraCamWindowComponent : public USceneCaptureComponent2D
 {
 	GENERATED_UCLASS_BODY()
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ExtraCamWindow, meta = (ExposeOnSpawn = "true"))
 	bool ExtraCamWindowEnabled = true;
 
@@ -58,11 +55,10 @@ private:
 #endif
 
 	TSharedPtr<FSceneViewport> SceneViewport = nullptr;
-	TSharedPtr<SWindow> ExtraWindow = nullptr;
-	TSharedPtr<SOverlay> ViewportOverlayWidget = nullptr;
+	TSharedPtr<SWindow>		   ExtraWindow = nullptr;
+	TSharedPtr<SOverlay>	   ViewportOverlayWidget = nullptr;
 
-	bool StandaloneGame = false;
-	URenderWidget* RenderTargetWidget = nullptr;
+	bool			  StandaloneGame = false;
+	URenderWidget*	  RenderTargetWidget = nullptr;
 	UCameraComponent* EditorVisualizer = nullptr;
-
 };

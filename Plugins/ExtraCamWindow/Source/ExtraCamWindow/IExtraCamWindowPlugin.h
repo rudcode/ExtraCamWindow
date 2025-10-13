@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "ModuleManager.h"
@@ -10,7 +9,6 @@
 
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 
-
 /**
  * The public interface to this module
  */
@@ -18,7 +16,6 @@ class IExtraCamWindowPlugin : public IModuleInterface
 {
 
 public:
-
 	/**
 	 * Singleton-like access to this module's interface.  This is just for convenience!
 	 * Beware of calling this during the shutdown phase, though.  Your module might have been unloaded already.
@@ -27,7 +24,7 @@ public:
 	 */
 	static inline IExtraCamWindowPlugin& Get()
 	{
-		return FModuleManager::LoadModuleChecked< IExtraCamWindowPlugin >( "ExtraCamWindowPlugin" );
+		return FModuleManager::LoadModuleChecked<IExtraCamWindowPlugin>("ExtraCamWindowPlugin");
 	}
 
 	/**
@@ -37,7 +34,6 @@ public:
 	 */
 	static inline bool IsAvailable()
 	{
-		return FModuleManager::Get().IsModuleLoaded( "ExtraCamWindowPlugin" );
+		return FModuleManager::Get().IsModuleLoaded("ExtraCamWindowPlugin");
 	}
 };
-

@@ -1,9 +1,4 @@
-
-
 #include "IExtraCamWindowPlugin.h"
-
-
-
 
 class FExtraCamWindowPlugin : public IExtraCamWindowPlugin
 {
@@ -14,18 +9,10 @@ class FExtraCamWindowPlugin : public IExtraCamWindowPlugin
 
 IMPLEMENT_MODULE(FExtraCamWindowPlugin, ExtraCamWindow)
 
-
-
 void FExtraCamWindowPlugin::StartupModule()
 {
-	
 }
-
 
 void FExtraCamWindowPlugin::ShutdownModule()
 {
-	
 }
-
-
-

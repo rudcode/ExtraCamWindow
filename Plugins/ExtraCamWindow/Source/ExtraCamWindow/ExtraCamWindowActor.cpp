@@ -1,4 +1,3 @@
-
 #include "IExtraCamWindowPlugin.h"
 
 #include "ExtraCamWindowActor.h"
@@ -8,4 +7,3 @@ AExtraCamWindowActor::AExtraCamWindowActor(const FObjectInitializer& ObjectIniti
 	ExtraCamComponent = CreateDefaultSubobject<UExtraCamWindowComponent>(TEXT("ExtraCamWindowComponent"));
 	RootComponent = ExtraCamComponent;
 }
-

@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "ExtraCamWindowComponent.h"
 #include "Slate/SGameLayerManager.h"
 #include "Widgets/SViewport.h"
@@ -36,7 +33,6 @@ void UExtraCamWindowComponent::BeginPlay()
 	if (LockResToMainWindow)
 		GEngine->GameViewport->GetViewportSize(InitialWindowRes);
 
-
 	SAssignNew(ExtraWindow, SWindow)
 		.ClientSize(InitialWindowRes)
 		.SizingRule(LockResToMainWindow ? ESizingRule::FixedSize : ESizingRule::UserSized)
@@ -49,39 +45,33 @@ void UExtraCamWindowComponent::BeginPlay()
 	ViewportOverlayWidget = SNew(SOverlay);
 
 	TSharedRef<SGameLayerManager> LayerManagerRef = SNew(SGameLayerManager)
-		.SceneViewport(GEngine->GameViewport->GetGameViewport())
-		.Visibility(EVisibility::Visible)
-		.Cursor(CursorInWindow)
-		[
-			ViewportOverlayWidget.ToSharedRef()
-		];
+														.SceneViewport(GEngine->GameViewport->GetGameViewport())
+														.Visibility(EVisibility::Visible)
+														.Cursor(CursorInWindow)
+															[ViewportOverlayWidget.ToSharedRef()];
 
 	TSharedPtr<SExtraCamViewport> Viewport = SNew(SExtraCamViewport)
-		.RenderDirectlyToWindow(false) // true crashes some stuff because HMDs need the rendertarget tex for distortion etc..
-		.EnableGammaCorrection(false)
-		.EnableStereoRendering(false) // not displaying on an HMD
-		.Cursor(CursorInWindow)
-		[
-			LayerManagerRef
-		];
+												 .RenderDirectlyToWindow(false) // true crashes some stuff because HMDs need the rendertarget tex for distortion etc..
+												 .EnableGammaCorrection(false)
+												 .EnableStereoRendering(false) // not displaying on an HMD
+												 .Cursor(CursorInWindow)
+													 [LayerManagerRef];
 
-	Viewport->OnWindowModeChanged.AddLambda([this]()
-	{
+	Viewport->OnWindowModeChanged.AddLambda([this]() {
 		switch (ExtraWindow->GetWindowMode())
 		{
-		case EWindowMode::Windowed:
-			ExtraWindow->SetWindowMode(EWindowMode::WindowedFullscreen);
-			break;
-		case EWindowMode::WindowedFullscreen:
-			ExtraWindow->SetWindowMode(EWindowMode::Windowed);
-			break;
-		default:
-			break;
+			case EWindowMode::Windowed:
+				ExtraWindow->SetWindowMode(EWindowMode::WindowedFullscreen);
+				break;
+			case EWindowMode::WindowedFullscreen:
+				ExtraWindow->SetWindowMode(EWindowMode::Windowed);
+				break;
+			default:
+				break;
 		}
 	});
 
 	SceneViewport = MakeShareable(new FSceneViewport(GEngine->GameViewport, Viewport));
-
 
 	Viewport->SetViewportInterface(SceneViewport.ToSharedRef());
 
@@ -89,7 +79,6 @@ void UExtraCamWindowComponent::BeginPlay()
 	ExtraWindow->SetContent(Viewport.ToSharedRef());
 	ExtraWindow->ShowWindow();
 
-	
 	SceneViewport->CaptureMouse(LockMouseFocusToExtraWindow);
 	SceneViewport->SetUserFocus(LockMouseFocusToExtraWindow);
 	SceneViewport->LockMouseToViewport(LockMouseFocusToExtraWindow);
@@ -97,8 +86,7 @@ void UExtraCamWindowComponent::BeginPlay()
 	// the window and some stuff gets initialized by ticking slate, otherwise we get a thread-related crash in packaged builds..
 	FSlateApplication::Get().Tick();
 
-	SceneViewport->SetOnSceneViewportResizeDel(FOnSceneViewportResize::CreateLambda([this](FVector2D newViewportSize)
-	{
+	SceneViewport->SetOnSceneViewportResizeDel(FOnSceneViewportResize::CreateLambda([this](FVector2D newViewportSize) {
 		if (LockResToMainWindow == false)
 			return;
 
@@ -107,13 +95,12 @@ void UExtraCamWindowComponent::BeginPlay()
 		FVector2D mainViewportSize;
 		GEngine->GameViewport->GetViewportSize(mainViewportSize);
 
-		if (mainViewportSize.X != newViewportSize.X || mainViewportSize.Y != newViewportSize.Y) {
+		if (mainViewportSize.X != newViewportSize.X || mainViewportSize.Y != newViewportSize.Y)
+		{
 			SceneViewport->ResizeFrame(mainViewportSize.X, mainViewportSize.Y, EWindowMode::Windowed);
 			TextureTarget->ResizeTarget(mainViewportSize.X, mainViewportSize.Y);
 		}
-
 	}));
-
 
 	if (this->GetWorld()->WorldType == EWorldType::Game)
 		StandaloneGame = true;
@@ -135,11 +122,12 @@ void UExtraCamWindowComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	if (!ExtraCamWindowEnabled)
 		return;
 
-	if (LockToPlayerCam) {
+	if (LockToPlayerCam)
+	{
 		APlayerController* playerController = GetWorld()->GetFirstPlayerController();
 		if (playerController != nullptr)
 		{
-			FVector camLoc;
+			FVector	 camLoc;
 			FRotator camRot;
 			playerController->GetPlayerViewPoint(camLoc, camRot);
 			SetWorldLocationAndRotation(camLoc, camRot);
@@ -153,9 +141,7 @@ bool UExtraCamWindowComponent::AddWidgetToExtraCam(UUserWidget* inWidget, int32 
 		return false;
 
 	ViewportOverlayWidget->AddSlot(zOrder)
-		[
-			inWidget->TakeWidget()
-		];
+		[inWidget->TakeWidget()];
 
 	return true;
 }
@@ -167,7 +153,6 @@ bool UExtraCamWindowComponent::RemoveWidgetFromExtraCam(UUserWidget* inWidget)
 
 	return ViewportOverlayWidget->RemoveSlot(inWidget->TakeWidget());
 }
-
 
 void UExtraCamWindowComponent::BeginDestroy()
 {
@@ -187,7 +172,8 @@ void UExtraCamWindowComponent::BeginDestroy()
 }
 
 #if WITH_EDITOR
-void UExtraCamWindowComponent::PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent) {
+void UExtraCamWindowComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 
 	EditorVisualizer->SetProjectionMode(ProjectionType);

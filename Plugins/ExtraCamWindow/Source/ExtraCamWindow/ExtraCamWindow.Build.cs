@@ -1,4 +1,3 @@
-
 using UnrealBuildTool;
 
 public class ExtraCamWindow : ModuleRules
