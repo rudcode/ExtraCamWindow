@@ -15,7 +15,7 @@ UExtraCamWindowComponent::UExtraCamWindowComponent(const FObjectInitializer& Obj
 {
 	PrimaryComponentTick.bCanEverTick = true;
 	bTickInEditor = false;
-	CaptureSource = ESceneCaptureSource::SCS_FinalColorLDR;
+	CaptureSource = ESceneCaptureSource::SCS_FinalToneCurveHDR;
 
 	EditorVisualizer = CreateDefaultSubobject<UCameraComponent>(TEXT("EditorVisualizer"));
 	EditorVisualizer->SetupAttachment(this);
