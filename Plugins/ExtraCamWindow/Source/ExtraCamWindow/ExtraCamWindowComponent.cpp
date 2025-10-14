@@ -30,15 +30,6 @@ void UExtraCamWindowComponent::BeginPlay()
 
 	auto renderer = FSlateApplication::Get().GetRenderer();
 
-	GetWorld()->GetTimerManager().SetTimerForNextTick([this]() {
-		DoWindowSetup();
-	});
-
-	Super::BeginPlay();
-}
-
-void UExtraCamWindowComponent::DoWindowSetup()
-{
 	SAssignNew(ExtraWindow, SWindow)
 		.ClientSize(InitialWindowRes)
 		.SizingRule(ESizingRule::UserSized)
@@ -102,6 +93,8 @@ void UExtraCamWindowComponent::DoWindowSetup()
 	SceneViewport->SetOnSceneViewportResizeDel(FOnSceneViewportResize::CreateLambda([this](FVector2D NewViewportSize) {
 		TextureTarget->ResizeTarget(NewViewportSize.X, NewViewportSize.Y);
 	}));
+
+	Super::BeginPlay();
 }
 
 void UExtraCamWindowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

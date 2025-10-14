@@ -51,8 +51,6 @@ private:
 	void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 #endif
 
-	void DoWindowSetup();
-
 	TSharedPtr<FSceneViewport> SceneViewport = nullptr;
 	TSharedPtr<SWindow>		   ExtraWindow = nullptr;
 	TSharedPtr<SOverlay>	   ViewportOverlayWidget = nullptr;
