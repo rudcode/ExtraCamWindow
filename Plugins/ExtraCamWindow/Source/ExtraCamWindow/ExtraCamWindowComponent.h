@@ -33,9 +33,6 @@ public:
 	FVector2D InitialWindowRes = FVector2D(1280, 720);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ExtraCamWindow, meta = (ExposeOnSpawn = "true"))
-	bool LockResToMainWindow = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ExtraCamWindow, meta = (ExposeOnSpawn = "true"))
 	TEnumAsByte<EWindowMode::Type> WindowMode = EWindowMode::Windowed;
 
 	UFUNCTION(BlueprintCallable, Category = ExtraCamWindow)

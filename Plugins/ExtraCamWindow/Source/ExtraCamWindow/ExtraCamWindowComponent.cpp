@@ -30,9 +30,6 @@ void UExtraCamWindowComponent::BeginPlay()
 
 	auto renderer = FSlateApplication::Get().GetRenderer();
 
-	if (LockResToMainWindow)
-		GEngine->GameViewport->GetViewportSize(InitialWindowRes);
-
 	GetWorld()->GetTimerManager().SetTimerForNextTick([this]() {
 		DoWindowSetup();
 	});
@@ -44,7 +41,7 @@ void UExtraCamWindowComponent::DoWindowSetup()
 {
 	SAssignNew(ExtraWindow, SWindow)
 		.ClientSize(InitialWindowRes)
-		.SizingRule(LockResToMainWindow ? ESizingRule::FixedSize : ESizingRule::UserSized)
+		.SizingRule(ESizingRule::UserSized)
 		.UseOSWindowBorder(true)
 		.Title(WindowTitle)
 		.FocusWhenFirstShown(LockMouseFocusToExtraWindow)
@@ -103,9 +100,6 @@ void UExtraCamWindowComponent::DoWindowSetup()
 	AddWidgetToExtraCam(RenderTargetWidget);
 
 	SceneViewport->SetOnSceneViewportResizeDel(FOnSceneViewportResize::CreateLambda([this](FVector2D NewViewportSize) {
-		if (LockResToMainWindow)
-			return;
-
 		TextureTarget->ResizeTarget(NewViewportSize.X, NewViewportSize.Y);
 	}));
 }
