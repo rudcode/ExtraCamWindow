@@ -42,7 +42,6 @@ void UExtraCamWindowComponent::BeginPlay()
 	ViewportOverlayWidget = SNew(SOverlay);
 
 	TSharedRef<SGameLayerManager> LayerManagerRef = SNew(SGameLayerManager)
-														.SceneViewport(GEngine->GameViewport->GetGameViewport())
 														.Visibility(EVisibility::Visible)
 														.Cursor(CursorInWindow)
 															[ViewportOverlayWidget.ToSharedRef()];
@@ -71,6 +70,7 @@ void UExtraCamWindowComponent::BeginPlay()
 	SceneViewport = MakeShareable(new FSceneViewport(GEngine->GameViewport, Viewport));
 
 	Viewport->SetViewportInterface(SceneViewport.ToSharedRef());
+	LayerManagerRef->SetSceneViewport(SceneViewport.Get());
 
 	ExtraWindow->SetWindowMode(WindowMode);
 	ExtraWindow->SetContent(Viewport.ToSharedRef());
