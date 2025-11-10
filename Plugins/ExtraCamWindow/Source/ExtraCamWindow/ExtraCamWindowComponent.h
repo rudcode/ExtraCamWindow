@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SceneCaptureComponent2D.h"
+#include "CineCameraSceneCaptureComponent.h"
 #include "Camera/CameraActor.h"
 #include "RenderWidget.h"
 
@@ -9,8 +9,8 @@
 /**
  *
  */
-UCLASS(hidecategories = (Collision, Object, Physics), ClassGroup = "ExtraCamWindow", editinlinenew, meta = (BlueprintSpawnableComponent), Blueprintable)
-class EXTRACAMWINDOW_API UExtraCamWindowComponent : public USceneCaptureComponent2D
+UCLASS(HideCategories = (Transform, Collision, Object, Physics, SceneComponent, PostProcessVolume, Projection, Rendering, PlanarReflection), ClassGroup = "ExtraCamWindow", EditInlineNew, meta = (BlueprintSpawnableComponent), Blueprintable)
+class EXTRACAMWINDOW_API UExtraCamWindowComponent : public UCineCaptureComponent2D
 {
 	GENERATED_UCLASS_BODY()
 public:
@@ -47,15 +47,11 @@ private:
 	void OnConstruction(const FTransform& Transform);
 	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-#if WITH_EDITOR
-	void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-#endif
 
 	TSharedPtr<FSceneViewport> SceneViewport = nullptr;
 	TSharedPtr<SWindow>		   ExtraWindow = nullptr;
 	TSharedPtr<SOverlay>	   ViewportOverlayWidget = nullptr;
 
-	bool			  StandaloneGame = false;
-	URenderWidget*	  RenderTargetWidget = nullptr;
-	UCameraComponent* EditorVisualizer = nullptr;
+	bool		   StandaloneGame = false;
+	URenderWidget* RenderTargetWidget = nullptr;
 };

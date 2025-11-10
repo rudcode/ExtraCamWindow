@@ -5,6 +5,12 @@
 AExtraCamWindowActor::AExtraCamWindowActor(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	USceneComponent* Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = Root;
+
+	CineCameraComponent = CreateDefaultSubobject<UCineCameraComponent>(TEXT("CineCamera"));
+	CineCameraComponent->SetupAttachment(RootComponent);
+
 	ExtraCamComponent = CreateDefaultSubobject<UExtraCamWindowComponent>(TEXT("ExtraCamWindowComponent"));
-	RootComponent = ExtraCamComponent;
+	ExtraCamComponent->SetupAttachment(CineCameraComponent);
 }

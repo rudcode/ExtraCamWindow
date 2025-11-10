@@ -16,11 +16,6 @@ UExtraCamWindowComponent::UExtraCamWindowComponent(const FObjectInitializer& Obj
 	PrimaryComponentTick.bCanEverTick = true;
 	bTickInEditor = false;
 	CaptureSource = ESceneCaptureSource::SCS_FinalToneCurveHDR;
-
-	EditorVisualizer = CreateDefaultSubobject<UCameraComponent>(TEXT("EditorVisualizer"));
-	EditorVisualizer->SetupAttachment(this);
-	EditorVisualizer->bIsEditorOnly = true;
-	EditorVisualizer->SetHiddenInGame(true);
 }
 
 void UExtraCamWindowComponent::BeginPlay()
@@ -157,16 +152,3 @@ void UExtraCamWindowComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 	RenderTargetWidget = nullptr;
 }
-
-#if WITH_EDITOR
-void UExtraCamWindowComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
-{
-	Super::PostEditChangeProperty(PropertyChangedEvent);
-
-	EditorVisualizer->SetProjectionMode(ProjectionType);
-	EditorVisualizer->SetFieldOfView(FOVAngle);
-	EditorVisualizer->SetOrthoWidth(OrthoWidth);
-	EditorVisualizer->PostProcessBlendWeight = PostProcessBlendWeight;
-	EditorVisualizer->PostProcessSettings = PostProcessSettings;
-}
-#endif
