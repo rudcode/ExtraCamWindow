@@ -67,6 +67,7 @@ void UExtraCamWindowComponent::BeginPlay()
 	Viewport->SetViewportInterface(SceneViewport.ToSharedRef());
 	LayerManagerRef->SetSceneViewport(SceneViewport.Get());
 
+	ExtraWindow->MoveWindowTo(InitialWindowPos);
 	ExtraWindow->SetWindowMode(WindowMode);
 	ExtraWindow->SetContent(Viewport.ToSharedRef());
 	ExtraWindow->ShowWindow();
